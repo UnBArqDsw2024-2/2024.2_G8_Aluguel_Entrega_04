@@ -3,7 +3,8 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { ApiService } from './core/services/api.service';
-import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
+import { AuthInterceptor } from './components/auth/pages/login/auth-interceptor.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,5 +13,10 @@ export const appConfig: ApplicationConfig = {
     ApiService,
     importProvidersFrom(HttpClientModule),
     provideHttpClient(withFetch()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true // Importante para permitir múltiplos interceptores
+    }
   ],
 };

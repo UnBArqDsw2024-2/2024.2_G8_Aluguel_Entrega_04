@@ -15,7 +15,7 @@ import { ApiService } from '../../../../core/services/api.service';
 export class ListingFormFactory {
   static createForm(fb: FormBuilder): FormGroup {
     return fb.group({
-      userCpfCnpj: ['123456789'],
+      userCpfCnpj: ['12345678910'],
       propertyType: ['', Validators.required],
       numberOfBedrooms: [null, Validators.required],
       numberOfBathrooms: [null, Validators.required],
@@ -42,7 +42,7 @@ export class ListingFormFactory {
 export class ListingAdapter {
   static adapt(apiResponse: any): any {
     return {
-      userCpfCnpj: apiResponse.userCpfCnpj || '123456789',
+      userCpfCnpj: apiResponse.userCpfCnpj || '12345678910',
       propertyType: apiResponse.propertyType,
       numberOfBedrooms: apiResponse.numberOfBedrooms,
       numberOfBathrooms: apiResponse.numberOfBathrooms,
@@ -147,7 +147,6 @@ export class CreateComponent implements OnInit {
   }
 
   onSubmit(): void {
-    console.log(this.anuncioForm);
     if (this.anuncioForm.valid) {
       const dadosAnuncio = this.anuncioForm.value;
       console.log('Formulário válido! Dados:', dadosAnuncio);

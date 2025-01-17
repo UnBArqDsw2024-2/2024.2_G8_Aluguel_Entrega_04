@@ -1,29 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { ApiService } from '../../../../core/services/api.service';
-import { Router, RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
 import { SharedComponents } from '../../../../shared/shared.components';
+import { AuthService } from './auth.service';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-login',
-  imports: [ReactiveFormsModule, HttpClientModule, SharedComponents],
+  imports: [
+    ReactiveFormsModule,
+    HttpClientModule,
+    SharedComponents,
+    ToastComponent,
+  ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
   standalone: true,
 })
 export class LoginComponent {
+  @ViewChild('toast') toast!: ToastComponent;
   loginForm!: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
-    private apiService: ApiService,
-    private router: Router
+    private router: Router,
+    private auth: AuthService
   ) {
     this.initForm();
   }
@@ -52,14 +59,19 @@ export class LoginComponent {
 
     const loginData = this.loginForm.value;
 
-    this.apiService.post('auth/login', loginData).subscribe(
-      (response: any) => {
-        sessionStorage.setItem('authToken', response.token);
-
-        // this.router.navigate(['/home']);
+    this.auth.login(loginData).subscribe(
+      (response) => {
+        sessionStorage.setItem('access_token', response.access_token);
+        this.toast.show('Login realizado com sucesso!', 'success');
+        setTimeout(() => {
+          this.router.navigate(['/home']);
+        }, 2000);
       },
       (error) => {
-        console.error('Erro ao fazer login', error);
+        this.toast.show(
+          'Erro ao fazer login. Verifique suas credenciais.',
+          'error'
+        );
       }
     );
   }

@@ -1,0 +1,45 @@
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
+    color: white;
+    animation: fadeIn 0.3s, fadeOut 0.3s 2.7s;
+
+    &.success {
+        background-color: #4caf50;
+        /* Verde para sucesso */
+    }
+
+    &.error {
+        background-color: #f44336;
+        /* Vermelho para erro */
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translate(-50%, -20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+    }
+
+    @keyframes fadeOut {
+        from {
+            opacity: 1;
+            transform: translateX(-50%);
+        }
+
+        to {
+            opacity: 0;
+            transform: translate(-50%, -20px);
+        }
+    }
+}

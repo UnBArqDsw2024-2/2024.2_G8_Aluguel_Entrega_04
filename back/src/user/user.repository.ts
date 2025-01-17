@@ -12,6 +12,10 @@ import { LogOnErrorUtil } from './decorators/user.method-logger';
 export class UserRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async findByUsername(username: string) {
+    return this.prisma.user.findUnique({ where: { email: username } });
+  }
+
   async createUser(data: CreateUserDto): Promise<User> {
     return this.prisma.user.create({
       data: {
@@ -71,9 +75,9 @@ export class UserRepository {
     });
   }
 
-  async findByEmail(email: string) {
-    return this.prisma.user.findUnique({ where: { email } });
-  }
+  // async findByEmail(email: string) {
+  //   return this.prisma.user.findUnique({ where: { email } });
+  // }
 
   async findByResetToken(token: string) {
     return this.prisma.user.findFirst({

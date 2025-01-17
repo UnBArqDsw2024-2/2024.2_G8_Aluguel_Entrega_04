@@ -1,20 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { SharedComponents } from '../../../../shared/shared.components';
 import { FormPrototype } from '../../../../shared/models/form-prototype.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../../../core/services/api.service';
 import { Router } from '@angular/router';
+import { CpfCnpjMaskDirective } from '../../../../shared/directive/cpf-cnpj-mask.directive';
+import { ToastComponent } from '../../../../shared/components/toast/toast.component';
 
 @Component({
   selector: 'app-register',
-  imports: [SharedComponents, FormsModule, CommonModule],
+  imports: [SharedComponents, FormsModule, CommonModule, CpfCnpjMaskDirective, ToastComponent],
   providers: [ApiService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
   standalone: true,
 })
 export class RegisterComponent {
+  @ViewChild('toast') toast!: ToastComponent;
   registerForm: FormPrototype;
   successMessage: string | null = null;
   errorMessage: string | null = null;
@@ -83,20 +86,17 @@ export class RegisterComponent {
 
   onSubmit(): void {
     if (this.validateForm()) {
-      this.successMessage = 'Cadastro realizado com sucesso!';
-
       this.apiService.post('users', this.registerForm).subscribe(
         (response) => {
-          console.log(response);
+          this.toast.show('Cadastro realizado com sucesso!', 'success');
+          setTimeout(() => {
+            this.router.navigate(['/home']);
+          }, 2000);
         },
         (error) => {
           console.error(error);
         }
       );
-
-      setTimeout(() => {
-        this.successMessage = null;
-      }, 5000);
     }
     if (
       !this.registerForm.name.trim() ||
