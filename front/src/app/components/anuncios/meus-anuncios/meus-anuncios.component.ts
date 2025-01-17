@@ -14,13 +14,7 @@ import { Router } from '@angular/router';
   templateUrl: './meus-anuncios.component.html',
   styleUrls: ['./meus-anuncios.component.css'],
   standalone: true,
-  imports: [
-    CommonModule,
-    AnuncioItemComponent,
-    SharedComponents,
-    HeaderComponent,
-    FooterComponent,
-  ],
+  imports: [CommonModule, AnuncioItemComponent, SharedComponents],
 })
 export class MeusAnunciosComponent implements OnInit {
   anuncios$!: Observable<ImovelInterface[]>;

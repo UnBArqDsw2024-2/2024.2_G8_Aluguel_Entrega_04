@@ -18,6 +18,7 @@ export class RegisterComponent {
   registerForm: FormPrototype;
   successMessage: string | null = null;
   errorMessage: string | null = null;
+  iconLogo = '../../../../../assets/icons/hosthub_logo.png';
 
   constructor(private apiService: ApiService, private router: Router) {
     this.registerForm = new FormPrototype({
@@ -87,10 +88,10 @@ export class RegisterComponent {
 
       this.apiService.post('users', this.registerForm).subscribe(
         (response) => {
-          console.log(response);
+          console.log({ res: response });
         },
         (error) => {
-          console.error(error);
+          console.error({ err: error });
         }
       );
 
@@ -111,5 +112,4 @@ export class RegisterComponent {
   cloneForm(): void {
     const newForm = this.registerForm.clone();
   }
-  iconLogo = '../../../../../assets/icons/hosthub_logo.png';
 }

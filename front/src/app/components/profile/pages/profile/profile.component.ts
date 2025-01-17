@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 
 import { ApiService } from '../../../../core/services/api.service';
 import { ProfileFormFactory } from './profile-module.factory';
 import { UserAdapter } from './user.adapter';
+import { SharedComponents } from '../../../../shared/shared.components';
 
 @Component({
   selector: 'app-profile',
+  imports: [SharedComponents, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
 })
