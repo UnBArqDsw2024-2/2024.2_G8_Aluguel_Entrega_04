@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { TelephoneAdapter } from './adapters/telephone.adapter';
@@ -17,15 +17,21 @@ export class UserRepository {
   }
 
   async createUser(data: CreateUserDto): Promise<User> {
-    return this.prisma.user.create({
-      data: {
-        ...data,
-        telephone: {
-          create: data.telephone,
+    const { confirmPassword, ...userData } = data;
+    console.log(confirmPassword);
+    try {
+      return this.prisma.user.create({
+        data: {
+          ...userData,
+          telephone: {
+            create: data.telephone,
+          },
         },
-      },
-      include: { telephone: true },
-    });
+        include: { telephone: true },
+      });
+    } catch {
+      throw new BadRequestException('Erro ao criar usuário');
+    }
   }
 
   async findByCpfCnpj(cpf_cnpj: string): Promise<User | null> {
