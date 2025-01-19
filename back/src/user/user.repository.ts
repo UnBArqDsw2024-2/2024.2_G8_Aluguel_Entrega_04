@@ -71,9 +71,9 @@ export class UserRepository {
     });
   }
 
-  // async findByEmail(email: string) {
-  //   return this.prisma.user.findUnique({ where: { email } });
-  // }
+  async findByEmail(email: string) {
+    return this.prisma.user.findUnique({ where: { email } });
+  }
 
   async findByResetToken(token: string) {
     return this.prisma.user.findFirst({
