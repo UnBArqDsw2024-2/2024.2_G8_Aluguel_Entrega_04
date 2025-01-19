@@ -34,4 +34,16 @@ export class ProfileComponent implements OnInit {
       console.log('Mudanças no formulário detectadas:', values);
     });
   }
+
+  openDeleteModal() {
+    console.log('Abrir modal de exclusão');
+  }
+
+  closeDeleteModal() {
+    console.log('Fechar modal de exclusão');
+  }
+
+  confirmDeleteAccount() {
+    console.log('Confirmar exclusão');
+  }
 }

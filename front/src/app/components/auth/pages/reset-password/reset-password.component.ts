@@ -19,6 +19,7 @@ import { SharedComponents } from '../../../../shared/shared.components';
 export class ResetPasswordComponent implements OnInit {
   resetPasswordForm: FormGroup;
   token: string | null = null;
+  isMessageVisible = false;
   successMessage = '';
   errorMessage = '';
 
@@ -38,7 +39,7 @@ export class ResetPasswordComponent implements OnInit {
             '(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[@$!%*?&])[A-Za-z0-9@$!%*?&]{8,}'
           ),
         ],
-      ]
+      ],
     });
   }
 

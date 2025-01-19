@@ -20,6 +20,10 @@ import { ValidationService } from './validation/validation.service';
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async findOne(username: string) {
+    return this.userRepository.findByUsername(username);
+  }
+
   async createUser(data: CreateUserDto): Promise<UserResponseDto> {
     const validationService = new ValidationService();
 

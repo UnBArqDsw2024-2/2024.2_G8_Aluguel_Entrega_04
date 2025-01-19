@@ -22,6 +22,7 @@
         {{ errorMessage }}
       </p>
 
+      <app-toast #toast></app-toast>
       <!-- Formulário -->
       <form (ngSubmit)="onSubmit()" #formDirective="ngForm">
         <!-- Input de Nome -->
@@ -52,6 +53,7 @@
               id="cpfCnpj"
               name="cpfCnpj"
               [(ngModel)]="registerForm.cpf_cnpj"
+              appCpfCnpjMask
               type="cpfCnpj"
               class="block peer w-full bg-transparent placeholder:text-transparent text-slate-700 text-sm border border-slate-200 rounded-md px-3 py-3 transition duration-300 ease hover:border-slate-300 shadow-sm focus:ring focus:ring-gray-300 focus:outline-none"
               placeholder="CPF/CNPJ "
