@@ -50,23 +50,27 @@ export class RegisterComponent {
       /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}(?:\.[a-zA-Z]{2})?$/;
 
     if (!name.trim()) {
-      this.errorMessage = 'Nome é obrigatório.';
+      this.toast.show('Nome é obrigatório.', 'error');
       return false;
     }
     if (!email.trim() || !emailRegex.test(email)) {
-      this.errorMessage = 'Email é obrigatório.';
+      this.toast.show('Email é obrigatório..', 'error');
+
       return false;
     }
     if (!emailRegex.test(email)) {
-      this.errorMessage = 'Email inválido.';
+      this.toast.show('Email inválido.', 'error');
+
       return false;
     }
     if (!password.trim() || password.length < 6) {
-      this.errorMessage = 'Senha deve ter pelo menos 6 caracteres.';
+      this.toast.show('Senha deve ter pelo menos 6 caracteres.', 'error');
+
       return false;
     }
     if (confirmPassword !== password) {
-      this.errorMessage = 'As senhas não coincidem.';
+      this.toast.show('As senhas não coincidem.', 'error');
+
       return false;
     }
 
@@ -92,30 +96,29 @@ export class RegisterComponent {
   }
 
   onSubmit(): void {
-    if (this.validateForm()) {
-      this.apiService.post('users', this.registerForm).subscribe(
-        (response) => {
-          this.toast.show('Cadastro realizado com sucesso!', 'success');
-          setTimeout(() => {
-            this.router.navigate(['/home']);
-          }, 2000);
-        },
-        (error) => {
-          console.error({ err: error });
-        }
-      );
-    }
     if (
       !this.registerForm.name.trim() ||
       !this.registerForm.email.trim() ||
       !this.registerForm.password.trim() ||
       !this.registerForm.confirmPassword.trim()
     ) {
-      this.errorMessage = 'Erro ao enviar o formulário. Verifique os campos.';
+      this.toast.show(
+        'Erro ao enviar o formulário. Verifique os campos.',
+        'error'
+      );
     }
-  }
 
-  cloneForm(): void {
-    const newForm = this.registerForm.clone();
+    if (this.validateForm()) {
+      console.log(this.registerForm);
+      this.apiService.post('users', this.registerForm).subscribe({
+        next: () => {
+          this.toast.show('Cadastro realizado com sucesso!', 'success');
+          this.router.navigate(['/home']);
+        },
+        error: () => {
+          this.toast.show('Erro ao registrar o usuário!', 'error');
+        },
+      });
+    }
   }
 }
