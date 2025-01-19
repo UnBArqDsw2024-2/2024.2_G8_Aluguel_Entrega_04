@@ -1,100 +1,72 @@
 generator client {
-    provider        = "prisma-client-js"
-    previewFeatures = ["driverAdapters"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
 datasource db {
-    provider  = "postgresql"
-    url       = env("POSTGRES_PRISMA_URL")
-    directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
-// ----------------------
-// USUÁRIO
-// ----------------------
 model User {
-    cpf_cnpj  String      @id @unique
-    password  String
-    name      String
-    email     String      @unique
-    site      String?
-    telephone Telephone[]
-    reset_password_token   String?
-    reset_password_expires DateTime?
-    Property  Property[]
-    Review    Review[]
+  email                  String      @unique
+  name                   String
+  cpf_cnpj               String      @id @unique
+  password               String
+  site                   String?
+  reset_password_expires DateTime?
+  reset_password_token   String?
+  Property               Property[]
+  Review                 Review[]
+  telephone              Telephone[]
 }
 
-// ----------------------
-// CONTATO (telefone)
-// ----------------------
 model Telephone {
-    number String @id @unique
-    userId String
-
-//  user User @relation(fields: [userId], references: [cpf_cnpj])
-    user User @relation(fields: [userId], references: [cpf_cnpj], onDelete: Cascade)
+  number String @id @unique
+  userId String
+  user   User   @relation(fields: [userId], references: [cpf_cnpj], onDelete: Cascade)
 }
 
-
-// ----------------------
-// PROPERTY
-// ----------------------
 model Property {
-    id                Int       @id @default(autoincrement())
-    adType            String?
-    condoFee          Float?
-    description       String?
-    propertyTax       Float? // IPTU
-    available         Boolean?  @default(true)
-    numberOfBedrooms  Int?
-    price             Float?
-    creationDate      DateTime? @default(now())
-    parkingSpaces     Int?
-    propertyType      String? // e.g., house, apartment
-    numberOfBathrooms Int?
-    status            String?  @default("OFFILNE")
-
-    // Foreign Keys
-    userCpfCnpj String?
-    addressPk   Int?    @unique
-
-    // Relationships
-    user    User?    @relation(fields: [userCpfCnpj], references: [cpf_cnpj])
-    address Address? @relation(fields: [addressPk], references: [addressPk])
-    reviews Review[]
+  id                Int       @id @default(autoincrement())
+  adType            String?
+  condoFee          Float?
+  description       String?
+  propertyTax       Float?
+  available         Boolean?  @default(true)
+  numberOfBedrooms  Int?
+  price             Float?
+  creationDate      DateTime? @default(now())
+  parkingSpaces     Int?
+  propertyType      String?
+  numberOfBathrooms Int?
+  userCpfCnpj       String?
+  addressPk         Int?      @unique
+  status            String?   @default("OFFILNE")
+  address           Address?  @relation(fields: [addressPk], references: [addressPk])
+  user              User?     @relation(fields: [userCpfCnpj], references: [cpf_cnpj])
+  reviews           Review[]
 }
 
-// ----------------------
-// ADDRESS
-// ----------------------
 model Address {
-    addressPk    Int     @id @default(autoincrement())
-    neighborhood String?
-    number       String?
-    street       String?
-    city         String?
-    state        String?
-    postalCode   String?
-
-    // Relationship with Property (0:1)
-    property Property?
+  addressPk    Int       @id @default(autoincrement())
+  neighborhood String?
+  number       String?
+  street       String?
+  city         String?
+  state        String?
+  postalCode   String?
+  property     Property?
 }
 
-// ----------------------
-// REVIEW
-// ----------------------
 model Review {
-    userCpfCnpj String
-    propertyId  Int
+  userCpfCnpj String
+  propertyId  Int
+  rating      Int?
+  comment     String?
+  property    Property @relation(fields: [propertyId], references: [id])
+  user        User     @relation(fields: [userCpfCnpj], references: [cpf_cnpj])
 
-    rating  Int?
-    comment String?
-
-    // Relationships
-    user     User     @relation(fields: [userCpfCnpj], references: [cpf_cnpj])
-    property Property @relation(fields: [propertyId], references: [id])
-
-    // Composite primary key
-    @@id([userCpfCnpj, propertyId])
+  @@id([userCpfCnpj, propertyId])
 }

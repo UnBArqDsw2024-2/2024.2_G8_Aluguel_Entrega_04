@@ -35,6 +35,10 @@ export class UserService {
       throw new BadRequestException('CPF/CNPJ inválido');
     }
 
+    if (data.password !== data.confirmPassword) {
+      throw new BadRequestException('As senhas não são iguais');
+    }
+
     const existingUser = await this.userRepository.findByCpfCnpj(data.cpf_cnpj);
     if (existingUser) {
       throw new BadRequestException('CPF/CNPJ já cadastrado');

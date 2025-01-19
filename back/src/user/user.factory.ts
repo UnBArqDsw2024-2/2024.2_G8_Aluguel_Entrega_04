@@ -5,6 +5,7 @@ export class UserFactory {
     return {
       cpf_cnpj: data.cpf_cnpj,
       password: data.password,
+      confirmPassword: data.confirmPassword,
       name: data.name,
       email: data.email,
       site: data.site,

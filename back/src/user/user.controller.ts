@@ -14,6 +14,7 @@ import { UserResponseDto } from './dto/user-response.dto';
 import { UserService } from './user.service';
 import { PasswordResetFacade } from './adapters/password-reset.facade';
 import { Get } from '@nestjs/common';
+import { Public } from 'src/auth/constants/constants';
 
 @Controller('users')
 export class UserController {
@@ -22,11 +23,22 @@ export class UserController {
     private readonly passwordResetFacade: PasswordResetFacade,
   ) {}
 
-  @Post()
+  @Public()
+  @Post('')
   async createUser(
     @Body() createUserDto: CreateUserDto,
+    @Res() res,
   ): Promise<UserResponseDto> {
-    return this.userService.createUser(createUserDto);
+    try {
+      await this.userService.createUser(createUserDto);
+      return res
+        .status(HttpStatus.OK)
+        .json({ message: 'Usuario criado com sucesso!' });
+    } catch (error: any) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ message: error.message });
+    }
   }
 
   @Put(':cpf_cnpj')

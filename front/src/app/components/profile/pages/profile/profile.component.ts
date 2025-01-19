@@ -4,13 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ApiService } from '../../../../core/services/api.service';
 import { ProfileFormFactory } from './profile-module.factory';
 import { UserAdapter } from './user.adapter';
-import { LogoNameComponent } from '../../../../shared/components/logo-name/logo-name.component';
+import { SharedComponents } from '../../../../shared/shared.components';
 
 @Component({
   selector: 'app-profile',
+  imports: [SharedComponents, ReactiveFormsModule],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  imports: [LogoNameComponent, ReactiveFormsModule],
 })
 export class ProfileComponent implements OnInit {
   profileForm!: FormGroup;

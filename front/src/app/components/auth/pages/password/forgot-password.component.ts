@@ -27,8 +27,8 @@ export class ForgotPasswordComponent {
   forgotPasswordForm: FormGroup;
   showMessage = false;
   message = '';
-  errorMessage = '';
-  sucessMessage = '';
+  errorMessage: string = '';
+  sucessMessage: string = '';
 
   constructor(
     private fb: FormBuilder,
